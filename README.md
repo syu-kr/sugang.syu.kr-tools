@@ -1,2 +1,3 @@
-# cse.syu.kr-tools
-Tools for syu basket information.
+# basket.syu.kr-tools
+
+Tools for syu basket & sugang information.
