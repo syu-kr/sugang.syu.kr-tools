@@ -56,6 +56,7 @@ const getConvert = () => {
     for (let elemen of element['elements']) {
       for (let eleme of elemen['elements']) {
         let info = {}
+        let lectnum = 0
         let department = ''
         let lecture = ''
         let professor = ''
@@ -65,6 +66,7 @@ const getConvert = () => {
         let notice = 0
 
         for (let elem of eleme['elements']) {
+          if (elem['name'] == 'LECT_NO') lectnum = elem['attributes']['value']
           if (elem['name'] == 'FCLT_NM') department = elem['attributes']['value']
           if (elem['name'] == 'SBJT_NM') lecture = elem['attributes']['value']
           if (elem['name'] == 'STF_NM') professor = elem['attributes']['value']
@@ -77,6 +79,7 @@ const getConvert = () => {
 
         if (type == '1') {
           info = {
+            '강좌번호': lectnum,
             '학부(과)': department,
             '강좌명': lecture,
             '교수명': professor,
@@ -88,6 +91,7 @@ const getConvert = () => {
 
         if (type == '2') {
           info = {
+            '강좌번호': lectnum,
             '학부(과)': department,
             '강좌명': lecture,
             '교수명': professor,
