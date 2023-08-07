@@ -3,5 +3,5 @@
   "trailingComma": "all",
   "quoteProps": "preserve",
   "semi": false,
-  "printWidth": 100
+  "printWidth": 120
 }

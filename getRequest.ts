@@ -13,17 +13,17 @@
  */
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
-const getResponse = async () => {
-  const requestXML = fs.readFileSync('./request/request.xml', 'utf-8')
 
-  const response = await fetch(
-    'http://sugang.suwings.syu.ac.kr/websquare/engine/proworks/callServletService.jsp',
-    {
-      method: 'POST',
-      body: requestXML,
-      headers: { 'Content-Type': 'application/xml; charset=UTF-8' },
-    },
-  )
+const type: string = '1' // 1: basket,  2: sugang
+
+const getResponse = async () => {
+  const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
+
+  const response = await fetch('http://sugang.suwings.syu.ac.kr/websquare/engine/proworks/callServletService.jsp', {
+    method: 'POST',
+    body: requestXML,
+    headers: { 'Content-Type': 'application/xml; charset=UTF-8' },
+  })
 
   if (!response.ok) {
     response.text().then((text) => {
@@ -34,13 +34,13 @@ const getResponse = async () => {
   const rawXML = await response.text()
   const rawJSON = xml2json(rawXML)
 
-  fs.writeFile('./response/response.xml', rawXML, (err) => {
+  fs.writeFile('./response/response' + type + '.xml', rawXML, (err) => {
     if (err) {
       console.log(err)
     }
   })
 
-  fs.writeFile('./response/response.json', JSON.stringify(JSON.parse(rawJSON), null, 2), (err) => {
+  fs.writeFile('./response/response' + type + '.json', JSON.stringify(JSON.parse(rawJSON), null, 2), (err) => {
     if (err) {
       console.log(err)
     }
@@ -48,18 +48,21 @@ const getResponse = async () => {
 }
 
 const getConvert = () => {
-  const response = JSON.parse(fs.readFileSync('./response/response.json', 'utf-8'))
+  const response = JSON.parse(fs.readFileSync('./response/response' + type + '.json', 'utf-8'))
 
   let infos: any = []
 
   for (let element of response['elements']) {
     for (let elemen of element['elements']) {
       for (let eleme of elemen['elements']) {
+        let info = {}
         let department = ''
         let lecture = ''
         let professor = ''
         let limit = 0
         let basket = 0
+        let sugang = 0
+        let notice = 0
 
         for (let elem of eleme['elements']) {
           if (elem['name'] == 'FCLT_NM') department = elem['attributes']['value']
@@ -67,15 +70,32 @@ const getConvert = () => {
           if (elem['name'] == 'STF_NM') professor = elem['attributes']['value']
           if (elem['name'] == 'LIMIT_CNT') limit = elem['attributes']['value']
           if (elem['name'] == 'APLY_CNT') basket = elem['attributes']['value']
+          if (elem['name'] == 'TLSN_LMIT_PRNS_CNT') limit = elem['attributes']['value']
+          if (elem['name'] == 'ALLS_PRNS') sugang = elem['attributes']['value']
+          if (elem['name'] == 'NOTI_CTNT') notice = elem['attributes']['value']
         }
 
-        let info = {
-          '학부(과)': department,
-          '강좌명': lecture,
-          '교수명': professor,
-          '제한인원': limit,
-          '장바구니': basket,
-          '경쟁률': basket / limit,
+        if (type == '1') {
+          info = {
+            '학부(과)': department,
+            '강좌명': lecture,
+            '교수명': professor,
+            '제한인원': limit,
+            '장바구니': basket,
+            '경쟁률': basket / limit,
+          }
+        }
+
+        if (type == '2') {
+          info = {
+            '학부(과)': department,
+            '강좌명': lecture,
+            '교수명': professor,
+            '제한인원': limit,
+            '신청인원': sugang,
+            '공지': notice,
+            '상태': +limit < +sugang ? '이상 감지' : +limit == +sugang ? '신청 불가' : '신청 가능',
+          }
         }
 
         infos.push(info)
@@ -98,12 +118,19 @@ const getConvert = () => {
     'data': infos,
   }
 
-  fs.writeFile('./response/convert.json', JSON.stringify(convert, null, 2), (err) => {
+  fs.writeFile('./response/convert' + type + '.json', JSON.stringify(convert, null, 2), (err) => {
     if (err) {
       console.log(err)
     }
   })
 }
 
+const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 getResponse()
-getConvert()
+
+delay(4000).then(() => {
+  getConvert()
+})
