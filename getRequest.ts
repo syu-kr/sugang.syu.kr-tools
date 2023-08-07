@@ -14,7 +14,7 @@
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
 
-const type: string = '1' // 1: basket,  2: sugang
+const type: string = '2' // 1: basket,  2: sugang
 
 const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
@@ -98,7 +98,7 @@ const getConvert = () => {
           }
         }
 
-        infos.push(info)
+        if (department == '공통(교양)') infos.push(info)
       }
     }
   }
