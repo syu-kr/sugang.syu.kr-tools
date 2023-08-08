@@ -108,7 +108,7 @@ const getConvert = () => {
         // )
         //   infos.push(info)
 
-        if (department == '컴퓨터공학부') infos.push(info)
+        if (department == '공통(교양)' || department == '컴퓨터공학부') infos.push(info)
       }
     }
   }
