@@ -102,13 +102,13 @@ const getConvert = () => {
           }
         }
 
-        // if (
-        //   (department == '공통(교양)' || department == '컴퓨터공학부') &&
-        //   (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3)
-        // )
-        //   infos.push(info)
+        if (
+          (department == '공통(교양)' || department == '컴퓨터공학부') &&
+          (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3)
+        )
+          infos.push(info)
 
-        if (department == '공통(교양)' || department == '컴퓨터공학부') infos.push(info)
+        // if (department == '공통(교양)' || department == '컴퓨터공학부') infos.push(info)
       }
     }
   }
