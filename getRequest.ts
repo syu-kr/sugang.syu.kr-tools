@@ -57,6 +57,7 @@ const getConvert = () => {
       for (let eleme of elemen['elements']) {
         let info = {}
         let lectnum = 0
+        let area = ''
         let department = ''
         let lecture = ''
         let professor = ''
@@ -67,6 +68,7 @@ const getConvert = () => {
 
         for (let elem of eleme['elements']) {
           if (elem['name'] == 'LECT_NO') lectnum = elem['attributes']['value']
+          if (elem['name'] == 'CTNCCH_FLD_DIV_CD') area = elem['attributes']['value']
           if (elem['name'] == 'FCLT_NM') department = elem['attributes']['value']
           if (elem['name'] == 'SBJT_NM') lecture = elem['attributes']['value']
           if (elem['name'] == 'STF_NM') professor = elem['attributes']['value']
@@ -92,6 +94,20 @@ const getConvert = () => {
         if (type == '2') {
           info = {
             '강좌번호': lectnum,
+            '영역구분':
+              area == '03'
+                ? '사회과학영역'
+                : area == '04'
+                ? '자연과학영역'
+                : area == '07'
+                ? '일반선택영역'
+                : area == '12'
+                ? '인성영역'
+                : area == '13'
+                ? '기초영역'
+                : area == '15'
+                ? '인문예술영역'
+                : area,
             '학부(과)': department,
             '강좌명': lecture,
             '교수명': professor,
