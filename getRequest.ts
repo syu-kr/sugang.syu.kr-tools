@@ -14,7 +14,7 @@
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
 
-const type: string = '2' // 1: basket,  2: sugang
+const type: string = '3' // 1: basket,  2: sugang, 3: closed sugang
 
 const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
@@ -118,7 +118,42 @@ const getConvert = () => {
           }
         }
 
-        infos.push(info)
+        if (type == '3') {
+          if (department == '공통(교양)' && +sugang >= 16) {
+            continue
+          }
+          if (+sugang >= 8) {
+            continue
+          }
+          // if (limit == sugang) {
+          //   continue
+          // }
+          info = {
+            '강좌번호': lectnum,
+            '영역구분':
+              area == '03'
+                ? '사회과학영역'
+                : area == '04'
+                ? '자연과학영역'
+                : area == '07'
+                ? '일반선택영역'
+                : area == '12'
+                ? '인성영역'
+                : area == '13'
+                ? '기초영역'
+                : area == '15'
+                ? '인문예술영역'
+                : area,
+            '학부(과)': department,
+            '강좌명': lecture,
+            '교수명': professor,
+            '제한인원': limit,
+            '신청인원': sugang,
+            '공지': notice,
+          }
+        }
+
+        if (Object.keys(info).length != 0) infos.push(info)
 
         // if (
         //   (department == '공통(교양)' || department == '컴퓨터공학부') &&
