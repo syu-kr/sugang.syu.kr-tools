@@ -119,15 +119,9 @@ const getConvert = () => {
         }
 
         if (type == '3') {
-          if (department == '공통(교양)' && +sugang >= 16) {
+          if ((department == '공통(교양)' && +sugang >= 16) || +sugang >= 8 || limit == sugang) {
             continue
           }
-          if (+sugang >= 8) {
-            continue
-          }
-          // if (limit == sugang) {
-          //   continue
-          // }
           info = {
             '강좌번호': lectnum,
             '영역구분':
@@ -150,6 +144,7 @@ const getConvert = () => {
             '제한인원': limit,
             '신청인원': sugang,
             '공지': notice,
+            '충원율': (sugang / limit) * 100,
           }
         }
 
