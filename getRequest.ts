@@ -152,7 +152,7 @@ const getConvert = () => {
           if ((department == '공통(교양)' && +sugang < 16) || +sugang < 8 || limit == sugang) {
             continue
           }
-          if ((sugang / limit) * 100 >= 40) {
+          if ((sugang / limit) * 100 >= 40 || +sugang >= 20) {
             continue
           }
           info = {
