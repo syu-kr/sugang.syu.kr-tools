@@ -14,7 +14,7 @@
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
 
-const type: string = '1' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
+const type: string = '2' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
 
 const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
@@ -181,13 +181,12 @@ const getConvert = () => {
           }
         }
 
-        if (Object.keys(info).length != 0) infos.push(info)
+        // if (Object.keys(info).length != 0) infos.push(info)
 
-        // if (
-        //   (department == '공통(교양)' || department == '컴퓨터공학부') &&
-        //   (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3)
-        // )
-        //   infos.push(info)
+        if (lecture == '지역사회공헌' || professor == '이미희') continue
+
+        if (department == '공통(교양)' && (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3))
+          infos.push(info)
 
         // if (department == '공통(교양)' || department == '컴퓨터공학부') infos.push(info)
       }
