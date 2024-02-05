@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<vector beforeServletCall="1707157035767" beforeEJBCall="1707157035767" ref="rqM1_F0" afterServletCall="1707157036121" afterEJBCall="1707157036121" result="1400">
+<vector beforeServletCall="1707157174882" beforeEJBCall="1707157174882" ref="rqM1_F0" afterServletCall="1707157175237" afterEJBCall="1707157175237" result="1400">
     <data vectorkey="0" type="Document">
         <ROW><FIND_KEY value="2024102024100599311"/><SHYS_CD value="1"/><CPTN_DIV_CD value="11"/><FCLT_CD value="00102"/><MJR_CD value="00000"/><FCLT_NM value="신학과"/><MJR_NM value=""/><SBJT_CD value="1001291"/><SBJT_NM value="노작교육 I"/><LCTPT value="1"/><STF_NO value="000183"/><STF_NM value="송창호"/><TM value="수5~6"/><LT_ROOM_NM value="노작교육실습장"/><TLSN_LMIT_PRNS_CNT value="45"/><OPEN_YY value="2024"/><OPEN_SHTM_CD value="10"/><EDUCUR_CORS_NO value="2024100599"/><LECT_NO value="311"/><SBJT_DIV_CD value=""/><FCLT_MJR_NM value="신학과"/><DIVCLS_LECT_NO value=""/><STD_ACTV_EVENT_NO value=""/><NOTI_CTNT value=""/><ALLS_PRNS value="2"/><CTNCCH_FLD_DIV_CD value=""/><OTHER_SUST_TLSN_POSB_TN value="Y"/><SHYS_LMIT_TN value="N"/><TLSN_APLY_STOP_TN value=""/><STD_APLY_IMPB_TN value=""/><TLSN_OBJ_DIV_CD value="00"/></ROW>
     </data>
