@@ -14,37 +14,45 @@
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
 
-const type: string = '2' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
+const type: string = '0' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
 
 const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
 
-  const response = await fetch('http://sugang.suwings.syu.ac.kr/websquare/engine/proworks/callServletService.jsp', {
-    method: 'POST',
-    body: requestXML,
-    headers: { 'Content-Type': 'application/xml; charset=UTF-8' },
-  })
-
-  if (!response.ok) {
-    response.text().then((text) => {
-      throw new Error(text)
+  try {
+    const response = await fetch('http://sugang.suwings.syu.ac.kr/websquare/engine/proworks/callServletService.jsp', {
+      method: 'POST',
+      body: requestXML,
+      headers: {
+        'Content-Type': 'application/xml; charset=UTF-8',
+        'Cookie':
+          'JSESSIONID_SUGANG=6wYiHK8a0Asu2wwrVa4fIciptiPXjf31X9RPP1iqxAzH7i45vMOAIe4wBdGll3P0.d2FzX3NlcnZsZXRfZW5naW5lMw==;',
+      },
     })
+
+    if (!response.ok) {
+      response.text().then((text) => {
+        throw new Error(text)
+      })
+    }
+
+    const rawXML = await response.text()
+    const rawJSON = xml2json(rawXML)
+
+    fs.writeFile('./response/response' + type + '.xml', rawXML, (err) => {
+      if (err) {
+        console.log(err)
+      }
+    })
+
+    fs.writeFile('./response/response' + type + '.json', JSON.stringify(JSON.parse(rawJSON), null, 2), (err) => {
+      if (err) {
+        console.log(err)
+      }
+    })
+  } catch (error) {
+    console.log(error)
   }
-
-  const rawXML = await response.text()
-  const rawJSON = xml2json(rawXML)
-
-  fs.writeFile('./response/response' + type + '.xml', rawXML, (err) => {
-    if (err) {
-      console.log(err)
-    }
-  })
-
-  fs.writeFile('./response/response' + type + '.json', JSON.stringify(JSON.parse(rawJSON), null, 2), (err) => {
-    if (err) {
-      console.log(err)
-    }
-  })
 }
 
 const getConvert = () => {
@@ -181,14 +189,14 @@ const getConvert = () => {
           }
         }
 
-        // if (Object.keys(info).length != 0) infos.push(info)
+        if (Object.keys(info).length != 0) infos.push(info)
 
-        if (lecture == '지역사회공헌' || professor == '이미희') continue
+        // if (lecture == '지역사회공헌' || professor == '이미희') continue
 
-        if (department == '공통(교양)' && (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3))
-          infos.push(info)
+        // if (department == '공통(교양)' && (+limit - +sugang == 1 || +limit - +sugang == 2 || +limit - +sugang == 3))
+        //   infos.push(info)
 
-        // if (department == '공통(교양)' || department == '컴퓨터공학부') infos.push(info)
+        // if (department == '컴퓨터공학부') infos.push(info)
       }
     }
   }
@@ -213,6 +221,8 @@ const getConvert = () => {
       console.log(err)
     }
   })
+
+  console.log(dateString + ' ' + timeString + ' api cheked.')
 }
 
 const delay = (ms: number) => {
@@ -224,3 +234,11 @@ getResponse()
 delay(4000).then(() => {
   getConvert()
 })
+
+// setInterval(() => {
+//   getResponse()
+
+//   delay(4000).then(() => {
+//     getConvert()
+//   })
+// }, 1000 * 60 * 10)
