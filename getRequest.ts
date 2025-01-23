@@ -14,7 +14,7 @@
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
 
-const type: string = '0' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
+const type: string = '1' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
 
 const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
