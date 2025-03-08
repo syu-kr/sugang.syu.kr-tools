@@ -13,6 +13,7 @@
  */
 import * as fs from 'fs'
 import { js2xml, xml2json, xml2js } from 'xml-js'
+import config from './config.json'
 
 const type: string = '1' // 1: basket,  2: sugang, 3: closed sugang, 4: warning sugang
 
@@ -20,14 +21,10 @@ const getResponse = async () => {
   const requestXML = fs.readFileSync('./request/request' + type + '.xml', 'utf-8')
 
   try {
-    const response = await fetch('http://sugang.suwings.syu.ac.kr/websquare/engine/proworks/callServletService.jsp', {
+    const response = await fetch(config.apiUrl, {
       method: 'POST',
       body: requestXML,
-      headers: {
-        'Content-Type': 'application/xml; charset=UTF-8',
-        'Cookie':
-          'JSESSIONID_SUGANG=6wYiHK8a0Asu2wwrVa4fIciptiPXjf31X9RPP1iqxAzH7i45vMOAIe4wBdGll3P0.d2FzX3NlcnZsZXRfZW5naW5lMw==;',
-      },
+      headers: config.headers,
     })
 
     if (!response.ok) {
